@@ -1,16 +1,33 @@
-# React + Vite
+# VOLT — Streetwear Urbano
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Sitio web institucional/comercial de VOLT, marca ficticia de indumentaria streetwear.
+Proyecto final de Tecnología Web.
 
-Currently, two official plugins are available:
+## Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Vite + React** — base del proyecto
+- **CSS externo** — sin inline styles ni frameworks
+- **EmailJS** — formulario de contacto sin backend
+- **Vercel** — hosting
 
-## React Compiler
+## Arquitectura
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+SPA (Single Page Application): una sola página con 6 secciones ancladas,
+navegables desde la navbar fija.
 
-## Expanding the Oxlint configuration
+| Sección | Anchor |
+|---|---|
+| Inicio | `#inicio` |
+| Colección | `#coleccion` |
+| Lookbook | `#lookbook` |
+| Drops | `#drops` |
+| Sobre VOLT | `#sobre` |
+| Contacto | `#contacto` |
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+## Desarrollo
+
+```bash
+npm install
+npm run dev      # servidor de desarrollo
+npm run build    # build de producción
+```

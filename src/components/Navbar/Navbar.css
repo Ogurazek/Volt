@@ -1,0 +1,121 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  height: var(--alto-navbar);
+  background-color: var(--blanco);
+  border-bottom: 2px solid var(--negro);
+}
+
+.navbar__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.navbar__logo {
+  font-family: var(--fuente-display);
+  font-size: 1.75rem;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+}
+
+.navbar__chispa {
+  width: 12px;
+  height: 12px;
+  background-color: var(--amarillo);
+  margin-left: 6px;
+}
+
+.navbar__links {
+  display: flex;
+  gap: 8px;
+}
+
+.navbar__links a {
+  display: inline-block;
+  padding: 4px 10px;
+  font-weight: 600;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+}
+
+/* Efecto resaltador amarillo al pasar el mouse */
+.navbar__links a:hover {
+  background-color: var(--amarillo);
+}
+
+/* --- Botón hamburguesa (solo móvil) --- */
+
+.navbar__toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  background: none;
+  border: none;
+}
+
+.navbar__toggle span {
+  display: block;
+  height: 3px;
+  width: 100%;
+  background-color: var(--negro);
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.navbar__toggle--abierto span:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+
+.navbar__toggle--abierto span:nth-child(2) {
+  opacity: 0;
+}
+
+.navbar__toggle--abierto span:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+/* --- Responsive --- */
+
+@media (max-width: 800px) {
+  .navbar__toggle {
+    display: flex;
+  }
+
+  .navbar__links {
+    position: fixed;
+    top: var(--alto-navbar);
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    gap: 0;
+    background-color: var(--blanco);
+    border-bottom: 2px solid var(--negro);
+    transform: translateY(-120%);
+    transition: transform 0.25s ease;
+    z-index: -1;
+  }
+
+  .navbar__links--abierto {
+    transform: translateY(0);
+  }
+
+  .navbar__links a {
+    display: block;
+    padding: 16px 24px;
+    border-top: 1px solid var(--gris);
+  }
+}

@@ -1,0 +1,193 @@
+/* ===== VOLT — estilos globales ===== */
+
+:root {
+  --blanco: #ffffff;
+  --negro: #111111;
+  --gris: #f5f5f5;
+  --amarillo: #ffe500;
+
+  --fuente-display: 'Anton', 'Arial Narrow', sans-serif;
+  --fuente-base: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+
+  --ancho-max: 1200px;
+  --alto-navbar: 64px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--fuente-base);
+  font-size: 1rem; /* 16px mínimo, requisito de legibilidad */
+  line-height: 1.6;
+  color: var(--negro);
+  background-color: var(--blanco);
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+}
+
+ul {
+  list-style: none;
+}
+
+/* Las secciones ancladas no quedan tapadas por la navbar fija */
+section[id] {
+  scroll-margin-top: var(--alto-navbar);
+}
+
+:focus-visible {
+  outline: 3px solid var(--negro);
+  outline-offset: 2px;
+}
+
+/* ===== Utilidades de layout ===== */
+
+.contenedor {
+  max-width: var(--ancho-max);
+  margin: 0 auto;
+  padding-inline: 24px;
+}
+
+.seccion {
+  padding-block: 96px;
+}
+
+.seccion--gris {
+  background-color: var(--gris);
+}
+
+.seccion--negra {
+  background-color: var(--negro);
+  color: var(--blanco);
+}
+
+.seccion--negra :focus-visible {
+  outline-color: var(--amarillo);
+}
+
+/* ===== Etiquetas y títulos ===== */
+
+.etiqueta {
+  display: inline-block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.etiqueta::before {
+  content: '';
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background-color: var(--amarillo);
+  margin-right: 10px;
+}
+
+.seccion-titulo {
+  font-family: var(--fuente-display);
+  font-weight: 400;
+  font-size: clamp(2.25rem, 5vw, 3.75rem);
+  line-height: 1.05;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+
+/* ===== Botones ===== */
+
+.btn {
+  display: inline-block;
+  padding: 14px 28px;
+  font-weight: 600;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  border: 2px solid var(--negro);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.btn--negro {
+  background-color: var(--negro);
+  color: var(--blanco);
+}
+
+.btn--negro:hover {
+  background-color: var(--amarillo);
+  color: var(--negro);
+}
+
+.btn--borde {
+  background-color: transparent;
+  color: var(--negro);
+}
+
+.btn--borde:hover {
+  background-color: var(--negro);
+  color: var(--blanco);
+}
+
+/* ===== Secciones en construcción (se completan en la segunda entrega) ===== */
+
+.seccion-esqueleto .contenedor {
+  text-align: center;
+}
+
+.seccion-esqueleto p {
+  max-width: 480px;
+  margin: 16px auto 0;
+}
+
+.seccion-esqueleto .proximamente {
+  display: inline-block;
+  margin-top: 24px;
+  padding: 6px 14px;
+  background-color: var(--amarillo);
+  color: var(--negro);
+  font-weight: 700;
+  font-size: 0.875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ===== Accesibilidad: menos movimiento ===== */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

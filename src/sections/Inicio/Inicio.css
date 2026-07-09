@@ -1,0 +1,81 @@
+.inicio {
+  min-height: calc(100vh - var(--alto-navbar));
+  margin-top: var(--alto-navbar);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.inicio__contenido {
+  width: 100%;
+  padding-top: 96px;
+  padding-bottom: 64px;
+}
+
+.inicio__titulo {
+  font-family: var(--fuente-display);
+  font-weight: 400;
+  font-size: clamp(4rem, 14vw, 11rem);
+  line-height: 0.95;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+
+.inicio__titulo-acento {
+  color: var(--blanco);
+  -webkit-text-stroke: 2px var(--negro);
+  paint-order: stroke fill;
+}
+
+.inicio__bajada {
+  max-width: 420px;
+  margin-top: 24px;
+  font-size: 1.125rem;
+}
+
+.inicio__ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 40px;
+}
+
+/* --- Cinta de alto voltaje (marquee) --- */
+
+.inicio__cinta {
+  background-color: var(--amarillo);
+  border-top: 2px solid var(--negro);
+  border-bottom: 2px solid var(--negro);
+  padding-block: 10px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.inicio__cinta-texto {
+  display: inline-flex;
+  animation: desplazar-cinta 18s linear infinite;
+}
+
+.inicio__cinta-texto span {
+  font-weight: 700;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  padding-right: 8px;
+}
+
+@keyframes desplazar-cinta {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .inicio__cinta-texto {
+    animation: none;
+  }
+}

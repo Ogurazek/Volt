@@ -1,5 +1,6 @@
 .inicio {
   min-height: calc(100vh - var(--alto-navbar));
+  min-height: calc(100svh - var(--alto-navbar));
   margin-top: var(--alto-navbar);
   display: flex;
   flex-direction: column;
@@ -77,5 +78,20 @@
 @media (prefers-reduced-motion: reduce) {
   .inicio__cinta-texto {
     animation: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .inicio__contenido {
+    padding-top: 64px;
+    padding-bottom: 48px;
+  }
+
+  .inicio__ctas {
+    flex-direction: column;
+  }
+
+  .inicio__ctas .btn {
+    text-align: center;
   }
 }

@@ -127,6 +127,7 @@ section[id] {
   line-height: 1.05;
   text-transform: uppercase;
   letter-spacing: 0.01em;
+  overflow-wrap: break-word;
 }
 
 /* ===== Botones ===== */

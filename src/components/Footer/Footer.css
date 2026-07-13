@@ -14,6 +14,13 @@
   gap: 48px;
 }
 
+/* Las celdas de la grilla no se achican por debajo de su contenido por defecto
+   (min-width: auto): el input del newsletter tiene un ancho nativo de ~20
+   caracteres y empujaba la grilla más allá del viewport en pantallas angostas */
+.footer__grid > * {
+  min-width: 0;
+}
+
 .footer__logo {
   font-family: var(--fuente-display);
   font-size: 2.5rem;

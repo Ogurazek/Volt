@@ -1,5 +1,11 @@
 import './Inicio.css'
 
+const ULTIMOS_DROPS = [
+  { nombre: 'Voltaje Hoodie', categoria: 'Hoodies', estado: 'Nuevo' },
+  { nombre: 'Circuito Tee', categoria: 'Tees', estado: 'Nuevo' },
+  { nombre: 'Corriente Cargo', categoria: 'Pants', estado: 'Agotado' },
+]
+
 function Inicio() {
   return (
     <section id="inicio" className="inicio">
@@ -20,6 +26,23 @@ function Inicio() {
           <a href="#drops" className="btn btn--borde">
             Próximos drops
           </a>
+        </div>
+
+        <div className="inicio__drops">
+          <span className="inicio__drops-titulo">Últimos drops</span>
+          <div className="inicio__drops-grid">
+            {ULTIMOS_DROPS.map((drop) => (
+              <a href="#drops" className="drop-card" key={drop.nombre}>
+                <div className="drop-card__imagen">
+                  <span className={`drop-card__estado drop-card__estado--${drop.estado === 'Nuevo' ? 'nuevo' : 'agotado'}`}>
+                    {drop.estado}
+                  </span>
+                </div>
+                <span className="drop-card__categoria">{drop.categoria}</span>
+                <span className="drop-card__nombre">{drop.nombre}</span>
+              </a>
+            ))}
+          </div>
         </div>
       </div>
 

@@ -43,6 +43,88 @@
   margin-top: 40px;
 }
 
+/* --- Últimos drops (cards con hover) --- */
+
+.inicio__drops {
+  margin-top: 64px;
+}
+
+.inicio__drops-titulo {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.inicio__drops-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.drop-card {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+}
+
+.drop-card__imagen {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  background-color: var(--negro);
+  border: 2px solid var(--negro);
+  overflow: hidden;
+  transition: background-color 0.2s ease;
+}
+
+.drop-card__estado {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.drop-card__estado--nuevo {
+  background-color: var(--amarillo);
+  color: var(--negro);
+}
+
+.drop-card__estado--agotado {
+  background-color: var(--blanco);
+  color: var(--negro);
+}
+
+.drop-card__categoria {
+  margin-top: 12px;
+  font-size: 0.8125rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.drop-card__nombre {
+  font-weight: 700;
+}
+
+.drop-card:hover .drop-card__imagen,
+.drop-card:focus-visible .drop-card__imagen {
+  background-color: var(--amarillo);
+}
+
+@media (max-width: 700px) {
+  .inicio__drops-grid {
+    grid-template-columns: 1fr;
+    max-width: 320px;
+  }
+}
+
 /* --- Cinta de alto voltaje (marquee) --- */
 
 .inicio__cinta {

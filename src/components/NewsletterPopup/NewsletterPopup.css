@@ -1,0 +1,90 @@
+.popup-newsletter__fondo {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background-color: rgba(17, 17, 17, 0.75);
+}
+
+.popup-newsletter {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  background-color: var(--blanco);
+  border: 2px solid var(--negro);
+  padding: 40px 32px 32px;
+}
+
+.popup-newsletter__cerrar {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 40px;
+  height: 40px;
+  font-size: 1.75rem;
+  line-height: 1;
+  background: none;
+  border: none;
+  color: var(--negro);
+  transition: color 0.15s ease;
+}
+
+.popup-newsletter__cerrar:hover {
+  color: var(--amarillo);
+  background-color: var(--negro);
+}
+
+.popup-newsletter__titulo {
+  font-family: var(--fuente-display);
+  font-weight: 400;
+  font-size: clamp(1.75rem, 5vw, 2.5rem);
+  line-height: 1.05;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+.popup-newsletter__texto {
+  margin-top: 12px;
+  max-width: 340px;
+}
+
+.popup-newsletter form {
+  display: flex;
+  margin-top: 24px;
+}
+
+.popup-newsletter input {
+  flex: 1;
+  min-width: 0;
+  padding: 12px 14px;
+  font-family: inherit;
+  font-size: 1rem;
+  border: 2px solid var(--negro);
+  border-right: none;
+  background-color: var(--blanco);
+  color: var(--negro);
+}
+
+.popup-newsletter form .btn {
+  border-left: none;
+}
+
+.popup-newsletter__mensaje {
+  display: inline-block;
+  margin-top: 14px;
+  padding: 6px 14px;
+  background-color: var(--amarillo);
+  color: var(--negro);
+  font-weight: 700;
+  font-size: 0.875rem;
+  letter-spacing: 0.04em;
+}
+
+@media (max-width: 480px) {
+  .popup-newsletter {
+    padding: 32px 20px 24px;
+  }
+}

@@ -6,11 +6,11 @@
   --gris: #f5f5f5;
   --amarillo: #ffe500;
 
-  --fuente-display: 'Anton', 'Arial Narrow', sans-serif;
+  --fuente-display: 'Bebas Neue', 'Arial Narrow', sans-serif;
   --fuente-base: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
 
   --ancho-max: 1200px;
-  --alto-navbar: 64px;
+  --alto-navbar: 72px;
 }
 
 *,
@@ -27,7 +27,7 @@ html {
 
 body {
   font-family: var(--fuente-base);
-  font-size: 1rem; /* 16px mínimo, requisito de legibilidad */
+  font-size: 1rem; 
   line-height: 1.6;
   color: var(--negro);
   background-color: var(--blanco);
@@ -55,7 +55,6 @@ ul {
   list-style: none;
 }
 
-/* Las secciones ancladas no quedan tapadas por la navbar fija */
 section[id] {
   scroll-margin-top: var(--alto-navbar);
 }
@@ -65,7 +64,6 @@ section[id] {
   outline-offset: 2px;
 }
 
-/* ===== Utilidades de layout ===== */
 
 .contenedor {
   max-width: var(--ancho-max);
@@ -100,7 +98,6 @@ section[id] {
   }
 }
 
-/* ===== Etiquetas y títulos ===== */
 
 .etiqueta {
   display: inline-block;
@@ -130,7 +127,6 @@ section[id] {
   overflow-wrap: break-word;
 }
 
-/* ===== Botones ===== */
 
 .btn {
   display: inline-block;
@@ -187,7 +183,6 @@ section[id] {
   text-transform: uppercase;
 }
 
-/* ===== Accesibilidad: menos movimiento ===== */
 
 @media (prefers-reduced-motion: reduce) {
   html {

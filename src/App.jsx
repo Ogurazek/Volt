@@ -1,5 +1,6 @@
 import Navbar from './components/Navbar/Navbar'
 import Footer from './components/Footer/Footer'
+import NewsletterPopup from './components/NewsletterPopup/NewsletterPopup'
 import Inicio from './sections/Inicio/Inicio'
 import Coleccion from './sections/Coleccion/Coleccion'
 import Lookbook from './sections/Lookbook/Lookbook'
@@ -20,6 +21,7 @@ function App() {
         <Contacto />
       </main>
       <Footer />
+      <NewsletterPopup />
     </>
   )
 }

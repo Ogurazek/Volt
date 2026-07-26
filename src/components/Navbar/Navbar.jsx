@@ -19,7 +19,7 @@ function Navbar() {
     <header className="navbar">
       <nav className="navbar__inner contenedor" aria-label="Navegación principal">
         <a href="#inicio" className="navbar__logo" onClick={cerrarMenu}>
-          VOLT<span className="navbar__chispa" aria-hidden="true"></span>
+          VOLT
         </a>
 
         <button

@@ -5,8 +5,12 @@
   right: 0;
   z-index: 100;
   height: var(--alto-navbar);
-  background-color: var(--blanco);
-  border-bottom: 2px solid var(--negro);
+  background-color: rgba(17, 17, 17, 0.97);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.navbar :focus-visible {
+  outline-color: var(--amarillo);
 }
 
 .navbar__inner {
@@ -18,19 +22,13 @@
 
 .navbar__logo {
   font-family: var(--fuente-display);
-  font-size: 1.75rem;
-  letter-spacing: 0.04em;
+  font-size: 1.875rem;
+  letter-spacing: 0.14em;
+  color: var(--amarillo);
   text-decoration: none;
   line-height: 1;
   display: flex;
   align-items: center;
-}
-
-.navbar__chispa {
-  width: 12px;
-  height: 12px;
-  background-color: var(--amarillo);
-  margin-left: 6px;
 }
 
 .navbar__links {
@@ -42,17 +40,17 @@
   display: inline-block;
   padding: 4px 10px;
   white-space: nowrap;
-  font-weight: 600;
-  font-size: 1rem;
+  font-weight: 500;
+  font-size: 0.6875rem;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.16em;
   text-decoration: none;
-  transition: background-color 0.15s ease;
+  color: rgba(255, 255, 255, 0.75);
+  transition: color 0.2s ease;
 }
 
-/* Efecto resaltador amarillo al pasar el mouse */
 .navbar__links a:hover {
-  background-color: var(--amarillo);
+  color: var(--amarillo);
 }
 
 /* --- Botón hamburguesa (solo móvil) --- */
@@ -73,7 +71,7 @@
   display: block;
   height: 3px;
   width: 100%;
-  background-color: var(--negro);
+  background-color: var(--blanco);
   transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
@@ -91,7 +89,6 @@
 
 /* --- Responsive --- */
 
-/* Los 6 enlaces necesitan ~850px: el menú hamburguesa entra antes de que no quepan */
 @media (max-width: 960px) {
   .navbar__toggle {
     display: flex;
@@ -107,8 +104,8 @@
     overflow-y: auto;
     flex-direction: column;
     gap: 0;
-    background-color: var(--blanco);
-    border-bottom: 2px solid var(--negro);
+    background-color: rgba(17, 17, 17, 0.98);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     transform: translateY(-120%);
     transition: transform 0.25s ease;
     z-index: -1;
@@ -121,6 +118,6 @@
   .navbar__links a {
     display: block;
     padding: 16px 24px;
-    border-top: 1px solid var(--gris);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
   }
 }

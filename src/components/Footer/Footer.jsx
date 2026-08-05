@@ -81,7 +81,7 @@ function Footer() {
 
           <div className="footer__newsletter">
             <h2 className="footer__titulo">Newsletter</h2>
-            <p>Enterate de cada drop antes que nadie.</p>
+            <p>Enterate de cada drop antes que nadie</p>
             <form onSubmit={suscribir} noValidate>
               <label htmlFor="footer-email" className="visualmente-oculto">
                 Tu email

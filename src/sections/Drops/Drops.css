@@ -1,0 +1,101 @@
+.drops__bajada {
+  max-width: 480px;
+  margin-top: 16px;
+}
+
+.drops__proximo {
+  margin-top: 40px;
+  margin-bottom: 48px;
+  padding: 32px;
+  background-color: var(--negro);
+  color: var(--blanco);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.drops__proximo-titulo {
+  font-weight: 600;
+  font-size: 1rem;
+  max-width: 380px;
+}
+
+.drops__countdown {
+  display: flex;
+  gap: 20px;
+}
+
+.drops__countdown-unidad {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 52px;
+}
+
+.drops__countdown-valor {
+  font-family: var(--fuente-display);
+  font-size: 2.25rem;
+  color: var(--amarillo);
+  line-height: 1;
+}
+
+.drops__countdown-etiqueta {
+  margin-top: 4px;
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.drops__countdown-cerrado {
+  font-weight: 700;
+  color: var(--amarillo);
+}
+
+.drops__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.drop-card__estado--proximo {
+  background-color: var(--blanco);
+  color: var(--negro);
+  border: 2px solid var(--negro);
+}
+
+.drop-card__fecha {
+  margin-top: 4px;
+  font-size: 0.75rem;
+  opacity: 0.6;
+}
+
+@media (max-width: 900px) {
+  .drops__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .drops__proximo {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .drops__grid {
+    grid-template-columns: 1fr;
+    max-width: 320px;
+  }
+
+  .drops__countdown {
+    gap: 14px;
+  }
+
+  .drops__countdown-unidad {
+    min-width: 44px;
+  }
+}

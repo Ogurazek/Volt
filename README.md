@@ -37,7 +37,8 @@ navegables desde la navbar fija.
 - [x] Colección: catálogo estático (`src/data/productos.js`), filtro por categoría (Hoodies, Tees, Pants, Accesorios) con hash compartible (`#hoodies`, `#tees`, etc.), grid con efecto rollover en cards
 - [x] Lookbook: editorial de temporada con looks armados a partir del catálogo (`src/data/lookbook.js`), grid con placeholders de foto y hover
 - [x] Drops: catálogo de lanzamientos (`src/data/drops.js`) con badges Nuevo/Agotado/Próximo y countdown en vivo al próximo drop
-- [ ] Secciones Sobre y Contacto como esqueleto ("En construcción")
+- [x] Sobre VOLT: layout a dos columnas (foto + historia de marca) con grilla de valores (Autenticidad, Calidad, Comunidad, Movimiento)
+- [ ] Sección Contacto como esqueleto ("En construcción")
 
 ## Desarrollo
 

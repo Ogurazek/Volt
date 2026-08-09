@@ -35,7 +35,8 @@ navegables desde la navbar fija.
 - [x] Inicio: destacados de últimos drops (cards con hover)
 - [x] Popup de newsletter: aparece 2,5s después de entrar, una vez por sesión, con validación en cliente y cierre con Escape/click afuera
 - [x] Colección: catálogo estático (`src/data/productos.js`), filtro por categoría (Hoodies, Tees, Pants, Accesorios) con hash compartible (`#hoodies`, `#tees`, etc.), grid con efecto rollover en cards
-- [x] Secciones Lookbook, Drops, Sobre y Contacto como esqueleto ("En construcción")
+- [x] Lookbook: editorial de temporada con looks armados a partir del catálogo (`src/data/lookbook.js`), grid con placeholders de foto y hover
+- [ ] Secciones Drops, Sobre y Contacto como esqueleto ("En construcción")
 
 ## Desarrollo
 

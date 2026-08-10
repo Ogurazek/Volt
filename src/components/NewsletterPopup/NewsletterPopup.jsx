@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { X } from 'lucide-react'
 import './NewsletterPopup.css'
 
 const CLAVE_SESION = 'volt-popup-visto'
@@ -56,7 +57,7 @@ function NewsletterPopup() {
         onClick={(evento) => evento.stopPropagation()}
       >
         <button type="button" className="popup-newsletter__cerrar" aria-label="Cerrar" onClick={cerrar}>
-          ×
+          <X size={20} />
         </button>
 
         <span className="etiqueta">Alto voltaje</span>

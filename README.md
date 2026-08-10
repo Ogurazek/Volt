@@ -7,7 +7,9 @@ Proyecto final de Tecnología Web.
 
 - **Vite + React** — base del proyecto
 - **CSS externo** — sin inline styles ni frameworks
-- **EmailJS** — formulario de contacto sin backend
+- **lucide-react** — íconos de interfaz (cerrar, check, etc.)
+- **simple-icons** — logos de redes sociales (Instagram, TikTok, X)
+- **Formulario de contacto** — validación en cliente, sin envío real todavía (pendiente integrar EmailJS u otro servicio)
 - **Vercel** — hosting
 
 ## Arquitectura
@@ -38,7 +40,7 @@ navegables desde la navbar fija.
 - [x] Lookbook: editorial de temporada con looks armados a partir del catálogo (`src/data/lookbook.js`), grid con placeholders de foto y hover
 - [x] Drops: catálogo de lanzamientos (`src/data/drops.js`) con badges Nuevo/Agotado/Próximo y countdown en vivo al próximo drop
 - [x] Sobre VOLT: layout a dos columnas (foto + historia de marca) con grilla de valores (Autenticidad, Calidad, Comunidad, Movimiento)
-- [ ] Sección Contacto como esqueleto ("En construcción")
+- [x] Contacto: formulario (nombre, email, mensaje) con validación en cliente y estado de éxito, más redes sociales con handle
 
 ## Desarrollo
 

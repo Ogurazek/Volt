@@ -24,8 +24,9 @@
   right: 8px;
   width: 40px;
   height: 40px;
-  font-size: 1.75rem;
-  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: none;
   border: none;
   color: var(--negro);

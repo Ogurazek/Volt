@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import './Footer.css'
+import IconoMarca from '../IconoMarca/IconoMarca'
+import { redes } from '../../data/redes'
 
 const enlaces = [
   { href: '#inicio', label: 'Inicio' },
@@ -8,36 +10,6 @@ const enlaces = [
   { href: '#drops', label: 'Drops' },
   { href: '#sobre', label: 'Sobre VOLT' },
   { href: '#contacto', label: 'Contacto' },
-]
-
-const redes = [
-  {
-    nombre: 'Instagram',
-    url: 'https://www.instagram.com/',
-    icono: (
-      <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true">
-        <path d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2.1 1.8.2 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.2.4.4 1 .4 2.2.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.2 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.2-1 .4-2.2.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-1.8-.2-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.2-.4-.4-1-.4-2.2-.1-1.3-.1-1.7-.1-4.9s0-3.6.1-4.9c.1-1.2.2-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.2 1-.4 2.2-.4 1.3-.1 1.7-.1 4.9-.1M12 0C8.7 0 8.3 0 7 .1 5.8.1 4.9.3 4.1.6c-.8.3-1.5.7-2.2 1.4C1.3 2.6.9 3.3.6 4.1.3 4.9.1 5.8.1 7 0 8.3 0 8.7 0 12s0 3.7.1 5c0 1.2.2 2.1.5 2.9.3.8.7 1.5 1.4 2.1.6.7 1.3 1.1 2.1 1.4.8.3 1.7.5 2.9.5 1.3.1 1.7.1 5 .1s3.7 0 5-.1c1.2 0 2.1-.2 2.9-.5.8-.3 1.5-.7 2.1-1.4.7-.6 1.1-1.3 1.4-2.1.3-.8.5-1.7.5-2.9.1-1.3.1-1.7.1-5s0-3.7-.1-5c0-1.2-.2-2.1-.5-2.9-.3-.8-.7-1.5-1.4-2.1C21.4 1.3 20.7.9 19.9.6c-.8-.3-1.7-.5-2.9-.5C15.7 0 15.3 0 12 0zm0 5.8a6.2 6.2 0 1 0 0 12.4 6.2 6.2 0 0 0 0-12.4zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm7.8-10.4a1.4 1.4 0 1 1-2.9 0 1.4 1.4 0 0 1 2.9 0z" />
-      </svg>
-    ),
-  },
-  {
-    nombre: 'TikTok',
-    url: 'https://www.tiktok.com/',
-    icono: (
-      <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true">
-        <path d="M19.6 6.7a4.8 4.8 0 0 1-3.8-4.4V2h-3.3v13.2a2.8 2.8 0 1 1-2-2.7V9.1a6.1 6.1 0 1 0 5.3 6V8.9a8 8 0 0 0 4.4 1.3V6.9c-.2 0-.4 0-.6-.2z" />
-      </svg>
-    ),
-  },
-  {
-    nombre: 'X',
-    url: 'https://x.com/',
-    icono: (
-      <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true">
-        <path d="M18.2 2.3h3.3l-7.3 8.3 8.6 11.1h-6.7l-5.3-6.8-6 6.8H1.5l7.8-8.9L1 2.3h6.9l4.8 6.2 5.5-6.2zm-1.2 17.5h1.8L7 4.1H5l12 15.7z" />
-      </svg>
-    ),
-  },
 ]
 
 function Footer() {
@@ -118,7 +90,7 @@ function Footer() {
                     rel="noopener noreferrer"
                     aria-label={`VOLT en ${red.nombre} (se abre en una pestaña nueva)`}
                   >
-                    {red.icono}
+                    <IconoMarca icono={red.icono} size={22} />
                   </a>
                 </li>
               ))}

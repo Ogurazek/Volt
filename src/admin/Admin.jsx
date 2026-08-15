@@ -1,34 +1,11 @@
-import { useEffect, useState } from 'react'
-import { supabase, supabaseConfigurado } from '../lib/supabase'
+import { supabaseConfigurado } from '../lib/supabase'
+import { useSesion } from '../hooks/useSesion'
 import Login from './Login'
 import Panel from './Panel'
 import './Admin.css'
 
 function Admin() {
-  const [sesion, setSesion] = useState(null)
-  const [cargando, setCargando] = useState(true)
-
-  useEffect(() => {
-    if (!supabaseConfigurado) {
-      setCargando(false)
-      return
-    }
-
-    // getSession lee la sesion guardada por el navegador: por eso el panel
-    // sobrevive a un refresh sin volver a pedir credenciales.
-    supabase.auth.getSession().then(({ data }) => {
-      setSesion(data.session)
-      setCargando(false)
-    })
-
-    // onAuthStateChange mantiene el estado sincronizado ante login, logout
-    // y renovacion automatica del token.
-    const { data: escucha } = supabase.auth.onAuthStateChange((_evento, sesionActual) => {
-      setSesion(sesionActual)
-    })
-
-    return () => escucha.subscription.unsubscribe()
-  }, [])
+  const { sesion, cargando } = useSesion()
 
   if (!supabaseConfigurado) {
     return (

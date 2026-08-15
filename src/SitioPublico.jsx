@@ -8,19 +8,28 @@ import Drops from './sections/Drops/Drops'
 import Sobre from './sections/Sobre/Sobre'
 import Contacto from './sections/Contacto/Contacto'
 import { useDrops } from './hooks/useDrops'
+import { useProductos } from './hooks/useProductos'
+import { useSobre } from './hooks/useSobre'
 
 function SitioPublico() {
-  const { drops, cargando, error } = useDrops()
+  const drops = useDrops()
+  const catalogo = useProductos()
+  const sobre = useSobre()
 
   return (
     <>
       <Navbar />
       <main>
-        <Inicio drops={drops} />
-        <Coleccion />
+        <Inicio drops={drops.drops} />
+        <Coleccion
+          productos={catalogo.productos}
+          categorias={catalogo.categorias}
+          cargando={catalogo.cargando}
+          error={catalogo.error}
+        />
         <Lookbook />
-        <Drops drops={drops} cargando={cargando} error={error} />
-        <Sobre />
+        <Drops drops={drops.drops} cargando={drops.cargando} error={drops.error} />
+        <Sobre sobre={sobre.sobre} cargando={sobre.cargando} error={sobre.error} />
         <Contacto />
       </main>
       <Footer />

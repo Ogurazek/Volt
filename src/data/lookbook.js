@@ -1,4 +1,5 @@
-// Editorial de temporada: cada look combina piezas del catálogo (src/data/productos.js).
+// Editorial de temporada: cada look combina piezas del catálogo por nombre.
+// Pendiente de migrar a la base con una relación real contra productos.
 
 export const looks = [
   {

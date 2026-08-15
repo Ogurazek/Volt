@@ -1,5 +1,8 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { Settings } from 'lucide-react'
 import './Navbar.css'
+import { useSesion } from '../../hooks/useSesion'
 
 const enlaces = [
   { href: '#inicio', label: 'Inicio' },
@@ -12,6 +15,7 @@ const enlaces = [
 
 function Navbar() {
   const [abierto, setAbierto] = useState(false)
+  const { sesion } = useSesion()
 
   const cerrarMenu = () => setAbierto(false)
 
@@ -42,6 +46,16 @@ function Navbar() {
               </a>
             </li>
           ))}
+
+          {/* Solo para quien ya tiene sesion: es un atajo, no un control de acceso. */}
+          {sesion && (
+            <li>
+              <Link to="/admin" className="navbar__admin" onClick={cerrarMenu}>
+                <Settings size={14} strokeWidth={2.5} aria-hidden="true" />
+                Admin
+              </Link>
+            </li>
+          )}
         </ul>
       </nav>
     </header>

@@ -1,27 +1,18 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Pencil, Trash2, Plus } from 'lucide-react'
-import { eliminarDrop, listarDrops } from '../lib/drops'
+import { eliminarProducto, listarProductos } from '../lib/productos'
 import { listarCategorias } from '../lib/categorias'
 import { traducirError } from '../lib/errores'
-import FormularioDrop from './FormularioDrop'
+import FormularioProducto from './FormularioProducto'
 
-const ETIQUETAS_ESTADO = {
-  nuevo: 'Nuevo',
-  agotado: 'Agotado',
-  proximo: 'Próximo',
-}
+const formatearPrecio = new Intl.NumberFormat('es-AR', {
+  style: 'currency',
+  currency: 'ARS',
+  maximumFractionDigits: 0,
+}).format
 
-function formatearFecha(fecha) {
-  return new Date(fecha).toLocaleDateString('es-AR', {
-    day: 'numeric',
-    month: 'long',
-    hour: '2-digit',
-    minute: '2-digit',
-  })
-}
-
-function DropsAdmin() {
-  const [drops, setDrops] = useState([])
+function ProductosAdmin() {
+  const [productos, setProductos] = useState([])
   const [categorias, setCategorias] = useState([])
   const [cargando, setCargando] = useState(true)
   const [error, setError] = useState('')
@@ -32,8 +23,8 @@ function DropsAdmin() {
   const cargar = useCallback(async () => {
     setError('')
     try {
-      const [listaDrops, listaCategorias] = await Promise.all([listarDrops(), listarCategorias()])
-      setDrops(listaDrops)
+      const [lista, listaCategorias] = await Promise.all([listarProductos(), listarCategorias()])
+      setProductos(lista)
       setCategorias(listaCategorias)
     } catch (fallo) {
       setError(traducirError(fallo))
@@ -50,8 +41,8 @@ function DropsAdmin() {
     setBorrando(true)
     setError('')
     try {
-      await eliminarDrop(id)
-      setDrops((anteriores) => anteriores.filter((drop) => drop.id !== id))
+      await eliminarProducto(id)
+      setProductos((anteriores) => anteriores.filter((producto) => producto.id !== id))
       setConfirmando(null)
     } catch (fallo) {
       setError(traducirError(fallo))
@@ -66,16 +57,16 @@ function DropsAdmin() {
   }
 
   if (cargando) {
-    return <p className="admin__estado">Cargando drops…</p>
+    return <p className="admin__estado">Cargando productos…</p>
   }
 
   return (
     <>
       <div className="admin__encabezado">
         <div>
-          <h1 className="admin__titulo">Drops</h1>
+          <h1 className="admin__titulo">Colección</h1>
           <p className="admin__texto">
-            {drops.length} {drops.length === 1 ? 'lanzamiento cargado' : 'lanzamientos cargados'}.
+            {productos.length} {productos.length === 1 ? 'producto cargado' : 'productos cargados'}.
           </p>
         </div>
       </div>
@@ -87,26 +78,23 @@ function DropsAdmin() {
       )}
 
       <ul className="tarjetas">
-        {drops.map((drop) => (
-          <li className="tarjeta" key={drop.id}>
+        {productos.map((producto) => (
+          <li className="tarjeta" key={producto.id}>
             <div className="tarjeta__imagen">
-              {drop.imagen_url ? (
-                <img src={drop.imagen_url} alt={drop.nombre} />
+              {producto.imagen_url ? (
+                <img src={producto.imagen_url} alt={producto.nombre} />
               ) : (
                 <span className="tarjeta__sin-foto">Sin foto</span>
               )}
-              <span className={`tarjeta__estado tarjeta__estado--${drop.estado}`}>
-                {ETIQUETAS_ESTADO[drop.estado]}
-              </span>
 
-              {confirmando === drop.id && (
+              {confirmando === producto.id && (
                 <div className="tarjeta__confirmar">
-                  <p>¿Borrar este drop?</p>
+                  <p>¿Borrar este producto?</p>
                   <div className="tarjeta__confirmar-acciones">
                     <button
                       type="button"
                       className="tarjeta__btn tarjeta__btn--peligro"
-                      onClick={() => borrar(drop.id)}
+                      onClick={() => borrar(producto.id)}
                       disabled={borrando}
                     >
                       {borrando ? 'Borrando…' : 'Sí, borrar'}
@@ -125,18 +113,16 @@ function DropsAdmin() {
             </div>
 
             <div className="tarjeta__cuerpo">
-              <span className="tarjeta__categoria">{drop.categorias?.nombre}</span>
-              <span className="tarjeta__nombre">{drop.nombre}</span>
-              {drop.estado === 'proximo' && drop.fecha && (
-                <span className="tarjeta__fecha">{formatearFecha(drop.fecha)}</span>
-              )}
+              <span className="tarjeta__categoria">{producto.categorias?.nombre}</span>
+              <span className="tarjeta__nombre">{producto.nombre}</span>
+              <span className="tarjeta__precio">{formatearPrecio(producto.precio)}</span>
             </div>
 
             <div className="tarjeta__acciones">
               <button
                 type="button"
                 className="tarjeta__accion"
-                onClick={() => setFormulario({ drop })}
+                onClick={() => setFormulario({ producto })}
               >
                 <Pencil size={15} strokeWidth={2.5} aria-hidden="true" />
                 Editar
@@ -144,7 +130,7 @@ function DropsAdmin() {
               <button
                 type="button"
                 className="tarjeta__accion tarjeta__accion--peligro"
-                onClick={() => setConfirmando(drop.id)}
+                onClick={() => setConfirmando(producto.id)}
               >
                 <Trash2 size={15} strokeWidth={2.5} aria-hidden="true" />
                 Borrar
@@ -154,16 +140,20 @@ function DropsAdmin() {
         ))}
 
         <li className="tarjeta tarjeta--nueva">
-          <button type="button" className="tarjeta__nueva-btn" onClick={() => setFormulario({ drop: null })}>
+          <button
+            type="button"
+            className="tarjeta__nueva-btn"
+            onClick={() => setFormulario({ producto: null })}
+          >
             <Plus size={28} strokeWidth={2.5} aria-hidden="true" />
-            Nuevo drop
+            Nuevo producto
           </button>
         </li>
       </ul>
 
       {formulario && (
-        <FormularioDrop
-          drop={formulario.drop}
+        <FormularioProducto
+          producto={formulario.producto}
           categorias={categorias}
           onCerrar={() => setFormulario(null)}
           onGuardado={alGuardar}
@@ -173,4 +163,4 @@ function DropsAdmin() {
   )
 }
 
-export default DropsAdmin
+export default ProductosAdmin

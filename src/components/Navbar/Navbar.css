@@ -53,6 +53,22 @@
   color: var(--amarillo);
 }
 
+/* Atajo al panel: solo se renderiza si hay sesion iniciada. */
+
+.navbar__links a.navbar__admin {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+  color: var(--negro);
+  background-color: var(--amarillo);
+}
+
+.navbar__links a.navbar__admin:hover {
+  color: var(--negro);
+  background-color: var(--blanco);
+}
+
 /* --- Botón hamburguesa (solo móvil) --- */
 
 .navbar__toggle {

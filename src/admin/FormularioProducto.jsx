@@ -1,24 +1,16 @@
 import { useEffect, useState } from 'react'
 import { X, Upload } from 'lucide-react'
-import { ESTADOS, actualizarDrop, crearDrop, subirImagenDrop } from '../lib/drops'
+import { actualizarProducto, crearProducto, subirImagenProducto } from '../lib/productos'
 import { TIPOS_IMAGEN, TAMANO_MAXIMO } from '../lib/almacenamiento'
 import { traducirError } from '../lib/errores'
 
-// El input datetime-local trabaja en hora local y la base guarda en UTC.
-function aValorInput(iso) {
-  if (!iso) return ''
-  const fecha = new Date(iso)
-  return new Date(fecha.getTime() - fecha.getTimezoneOffset() * 60000).toISOString().slice(0, 16)
-}
-
-function FormularioDrop({ drop, categorias, onCerrar, onGuardado }) {
-  const esEdicion = Boolean(drop)
+function FormularioProducto({ producto, categorias, onCerrar, onGuardado }) {
+  const esEdicion = Boolean(producto)
 
   const [campos, setCampos] = useState({
-    nombre: drop?.nombre ?? '',
-    categoria_id: drop?.categoria_id ? String(drop.categoria_id) : '',
-    estado: drop?.estado ?? 'nuevo',
-    fecha: aValorInput(drop?.fecha),
+    nombre: producto?.nombre ?? '',
+    categoria_id: producto?.categoria_id ? String(producto.categoria_id) : '',
+    precio: producto?.precio != null ? String(producto.precio) : '',
   })
   const [archivo, setArchivo] = useState(null)
   const [previsualizacion, setPrevisualizacion] = useState(null)
@@ -52,8 +44,6 @@ function FormularioDrop({ drop, categorias, onCerrar, onGuardado }) {
     const elegido = evento.target.files?.[0]
     if (!elegido) return
 
-    // Las mismas reglas estan declaradas en el bucket: esta validacion es
-    // comodidad para no subir en vano, la que no se puede evadir es la otra.
     if (!TIPOS_IMAGEN.includes(elegido.type)) {
       setErrores((anteriores) => ({ ...anteriores, archivo: 'Formato no permitido. Usá JPG, PNG, WebP o AVIF.' }))
       return
@@ -69,11 +59,15 @@ function FormularioDrop({ drop, categorias, onCerrar, onGuardado }) {
 
   const validar = () => {
     const nuevosErrores = {}
-    if (!campos.nombre.trim()) nuevosErrores.nombre = 'Ingresá el nombre del drop.'
+    if (!campos.nombre.trim()) nuevosErrores.nombre = 'Ingresá el nombre del producto.'
     if (!campos.categoria_id) nuevosErrores.categoria_id = 'Elegí una categoría.'
-    if (campos.estado === 'proximo' && !campos.fecha) {
-      nuevosErrores.fecha = 'Un drop próximo necesita fecha de lanzamiento.'
+
+    const precio = Number(campos.precio)
+    if (!campos.precio.trim()) nuevosErrores.precio = 'Ingresá el precio.'
+    else if (!Number.isInteger(precio) || precio < 0) {
+      nuevosErrores.precio = 'El precio debe ser un número entero de pesos.'
     }
+
     setErrores(nuevosErrores)
     return Object.keys(nuevosErrores).length === 0
   }
@@ -88,15 +82,14 @@ function FormularioDrop({ drop, categorias, onCerrar, onGuardado }) {
       const datos = {
         nombre: campos.nombre.trim(),
         categoria_id: Number(campos.categoria_id),
-        estado: campos.estado,
-        fecha: campos.estado === 'proximo' ? new Date(campos.fecha).toISOString() : null,
-        imagen_url: drop?.imagen_url ?? null,
+        precio: Number(campos.precio),
+        imagen_url: producto?.imagen_url ?? null,
       }
 
-      if (archivo) datos.imagen_url = await subirImagenDrop(archivo)
+      if (archivo) datos.imagen_url = await subirImagenProducto(archivo)
 
-      if (esEdicion) await actualizarDrop(drop.id, datos)
-      else await crearDrop(datos)
+      if (esEdicion) await actualizarProducto(producto.id, datos)
+      else await crearProducto(datos)
 
       onGuardado()
     } catch (error) {
@@ -105,22 +98,22 @@ function FormularioDrop({ drop, categorias, onCerrar, onGuardado }) {
     }
   }
 
-  const imagenMostrada = previsualizacion ?? drop?.imagen_url ?? null
+  const imagenMostrada = previsualizacion ?? producto?.imagen_url ?? null
 
   return (
     <div
       className="modal"
       role="dialog"
       aria-modal="true"
-      aria-labelledby="modal-titulo"
+      aria-labelledby="modal-titulo-producto"
       onMouseDown={(evento) => {
         if (evento.target === evento.currentTarget) onCerrar()
       }}
     >
       <div className="modal__caja">
         <div className="modal__encabezado">
-          <h2 className="modal__titulo" id="modal-titulo">
-            {esEdicion ? 'Editar drop' : 'Nuevo drop'}
+          <h2 className="modal__titulo" id="modal-titulo-producto">
+            {esEdicion ? 'Editar producto' : 'Nuevo producto'}
           </h2>
           <button type="button" className="modal__cerrar" onClick={onCerrar} aria-label="Cerrar">
             <X size={20} strokeWidth={2.5} />
@@ -152,9 +145,9 @@ function FormularioDrop({ drop, categorias, onCerrar, onGuardado }) {
           </div>
 
           <div className="modal__campo">
-            <label htmlFor="drop-nombre">Nombre</label>
+            <label htmlFor="producto-nombre">Nombre</label>
             <input
-              id="drop-nombre"
+              id="producto-nombre"
               type="text"
               placeholder="Voltaje Hoodie"
               value={campos.nombre}
@@ -169,9 +162,9 @@ function FormularioDrop({ drop, categorias, onCerrar, onGuardado }) {
 
           <div className="modal__fila">
             <div className="modal__campo">
-              <label htmlFor="drop-categoria">Categoría</label>
+              <label htmlFor="producto-categoria">Categoría</label>
               <select
-                id="drop-categoria"
+                id="producto-categoria"
                 value={campos.categoria_id}
                 onChange={actualizarCampo('categoria_id')}
               >
@@ -190,34 +183,24 @@ function FormularioDrop({ drop, categorias, onCerrar, onGuardado }) {
             </div>
 
             <div className="modal__campo">
-              <label htmlFor="drop-estado">Estado</label>
-              <select id="drop-estado" value={campos.estado} onChange={actualizarCampo('estado')}>
-                {ESTADOS.map((estado) => (
-                  <option key={estado.valor} value={estado.valor}>
-                    {estado.etiqueta}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          {campos.estado === 'proximo' && (
-            <div className="modal__campo">
-              <label htmlFor="drop-fecha">Fecha de lanzamiento</label>
+              <label htmlFor="producto-precio">Precio</label>
               <input
-                id="drop-fecha"
-                type="datetime-local"
-                value={campos.fecha}
-                onChange={actualizarCampo('fecha')}
+                id="producto-precio"
+                type="number"
+                min="0"
+                step="1"
+                placeholder="68000"
+                value={campos.precio}
+                onChange={actualizarCampo('precio')}
               />
-              {errores.fecha && (
+              {errores.precio && (
                 <span className="modal__error" role="alert">
-                  {errores.fecha}
+                  {errores.precio}
                 </span>
               )}
-              <span className="modal__ayuda">Se usa para el countdown del sitio.</span>
+              <span className="modal__ayuda">En pesos, sin centavos.</span>
             </div>
-          )}
+          </div>
 
           {errorGeneral && (
             <p className="modal__error-general" role="alert">
@@ -239,4 +222,4 @@ function FormularioDrop({ drop, categorias, onCerrar, onGuardado }) {
   )
 }
 
-export default FormularioDrop
+export default FormularioProducto

@@ -1,14 +1,12 @@
 import { useEffect, useState } from 'react'
-import { listarDrops } from '../lib/drops'
+import { listarProductos } from '../lib/productos'
+import { listarCategorias } from '../lib/categorias'
 import { traducirError } from '../lib/errores'
 import { supabaseConfigurado } from '../lib/supabase'
 
-// Se consulta una sola vez desde SitioPublico y el resultado se reparte a
-// Inicio y a Drops: son dos secciones de la misma pagina y no tiene sentido
-// que cada una pida lo mismo por separado.
-
-export function useDrops() {
-  const [drops, setDrops] = useState([])
+export function useProductos() {
+  const [productos, setProductos] = useState([])
+  const [categorias, setCategorias] = useState([])
   const [cargando, setCargando] = useState(true)
   const [error, setError] = useState('')
 
@@ -19,13 +17,13 @@ export function useDrops() {
       return
     }
 
-    // Si el componente se desmonta antes de que responda el servidor, no
-    // intentamos actualizar estado de algo que ya no existe.
     let vigente = true
 
-    listarDrops()
-      .then((lista) => {
-        if (vigente) setDrops(lista)
+    Promise.all([listarProductos(), listarCategorias()])
+      .then(([lista, listaCategorias]) => {
+        if (!vigente) return
+        setProductos(lista)
+        setCategorias(listaCategorias)
       })
       .catch((fallo) => {
         if (vigente) setError(traducirError(fallo))
@@ -39,5 +37,5 @@ export function useDrops() {
     }
   }, [])
 
-  return { drops, cargando, error }
+  return { productos, categorias, cargando, error }
 }

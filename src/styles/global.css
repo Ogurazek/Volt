@@ -71,6 +71,17 @@ section[id] {
   padding-inline: 24px;
 }
 
+/* El panel se carga bajo demanda: sus estilos llegan con el, asi que este
+   aviso intermedio se define aca. */
+.cargando-panel {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--negro);
+  color: rgba(255, 255, 255, 0.6);
+}
+
 .seccion {
   padding-block: 96px;
 }

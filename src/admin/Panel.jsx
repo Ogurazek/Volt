@@ -5,9 +5,11 @@ import { supabase } from '../lib/supabase'
 import ProductosAdmin from './ProductosAdmin'
 import DropsAdmin from './DropsAdmin'
 import SobreAdmin from './SobreAdmin'
+import LookbookAdmin from './LookbookAdmin'
 
 const SECCIONES = [
   { clave: 'coleccion', etiqueta: 'Colección', componente: ProductosAdmin },
+  { clave: 'lookbook', etiqueta: 'Lookbook', componente: LookbookAdmin },
   { clave: 'drops', etiqueta: 'Drops', componente: DropsAdmin },
   { clave: 'sobre', etiqueta: 'Sobre VOLT', componente: SobreAdmin },
 ]

@@ -10,11 +10,13 @@ import Contacto from './sections/Contacto/Contacto'
 import { useDrops } from './hooks/useDrops'
 import { useProductos } from './hooks/useProductos'
 import { useSobre } from './hooks/useSobre'
+import { useLookbook } from './hooks/useLookbook'
 
 function SitioPublico() {
   const drops = useDrops()
   const catalogo = useProductos()
   const sobre = useSobre()
+  const lookbook = useLookbook()
 
   return (
     <>
@@ -27,7 +29,7 @@ function SitioPublico() {
           cargando={catalogo.cargando}
           error={catalogo.error}
         />
-        <Lookbook />
+        <Lookbook looks={lookbook.looks} cargando={lookbook.cargando} error={lookbook.error} />
         <Drops drops={drops.drops} cargando={drops.cargando} error={drops.error} />
         <Sobre sobre={sobre.sobre} cargando={sobre.cargando} error={sobre.error} />
         <Contacto />

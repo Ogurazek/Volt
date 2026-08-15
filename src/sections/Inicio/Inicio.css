@@ -311,9 +311,21 @@
   font-weight: 700;
 }
 
+.drop-card__foto {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
 .drop-card:hover .drop-card__imagen,
 .drop-card:focus-visible .drop-card__imagen {
   background-color: var(--amarillo);
+}
+
+.drop-card:hover .drop-card__foto,
+.drop-card:focus-visible .drop-card__foto {
+  transform: scale(1.04);
 }
 
 @media (max-width: 700px) {

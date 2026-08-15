@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import './Drops.css'
-import { drops } from '../../data/drops'
 
 const ETIQUETAS_ESTADO = {
   nuevo: 'Nuevo',
@@ -54,9 +53,9 @@ function Countdown({ fecha }) {
   )
 }
 
-function Drops() {
-  const proximoDrop = [...drops]
-    .filter((drop) => drop.estado === 'proximo')
+function Drops({ drops, cargando, error }) {
+  const proximoDrop = drops
+    .filter((drop) => drop.estado === 'proximo' && drop.fecha)
     .sort((a, b) => new Date(a.fecha) - new Date(b.fecha))[0]
 
   return (
@@ -65,6 +64,18 @@ function Drops() {
         <span className="etiqueta">Lanzamientos</span>
         <h2 className="seccion-titulo">Drops</h2>
         <p className="drops__bajada">Lanzamientos recientes y próximos. Sin restock.</p>
+
+        {cargando && <p className="drops__aviso">Cargando lanzamientos…</p>}
+
+        {!cargando && error && (
+          <p className="drops__aviso" role="alert">
+            {error}
+          </p>
+        )}
+
+        {!cargando && !error && drops.length === 0 && (
+          <p className="drops__aviso">Todavía no hay lanzamientos publicados.</p>
+        )}
 
         {proximoDrop && (
           <div className="drops__proximo">
@@ -75,20 +86,27 @@ function Drops() {
           </div>
         )}
 
-        <ul className="drops__grid">
-          {drops.map((drop) => (
-            <li className="drop-card" key={drop.id}>
-              <div className="drop-card__imagen">
-                <span className={`drop-card__estado drop-card__estado--${drop.estado}`}>
-                  {ETIQUETAS_ESTADO[drop.estado]}
-                </span>
-              </div>
-              <span className="drop-card__categoria">{drop.categoria}</span>
-              <span className="drop-card__nombre">{drop.nombre}</span>
-              {drop.estado === 'proximo' && <span className="drop-card__fecha">{formatearFecha(drop.fecha)}</span>}
-            </li>
-          ))}
-        </ul>
+        {drops.length > 0 && (
+          <ul className="drops__grid">
+            {drops.map((drop) => (
+              <li className="drop-card" key={drop.id}>
+                <div className="drop-card__imagen">
+                  {drop.imagen_url && (
+                    <img className="drop-card__foto" src={drop.imagen_url} alt={drop.nombre} />
+                  )}
+                  <span className={`drop-card__estado drop-card__estado--${drop.estado}`}>
+                    {ETIQUETAS_ESTADO[drop.estado]}
+                  </span>
+                </div>
+                <span className="drop-card__categoria">{drop.categorias?.nombre}</span>
+                <span className="drop-card__nombre">{drop.nombre}</span>
+                {drop.estado === 'proximo' && drop.fecha && (
+                  <span className="drop-card__fecha">{formatearFecha(drop.fecha)}</span>
+                )}
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </section>
   )

@@ -1,28 +1,18 @@
-import Navbar from './components/Navbar/Navbar'
-import Footer from './components/Footer/Footer'
-import NewsletterPopup from './components/NewsletterPopup/NewsletterPopup'
-import Inicio from './sections/Inicio/Inicio'
-import Coleccion from './sections/Coleccion/Coleccion'
-import Lookbook from './sections/Lookbook/Lookbook'
-import Drops from './sections/Drops/Drops'
-import Sobre from './sections/Sobre/Sobre'
-import Contacto from './sections/Contacto/Contacto'
+import { Routes, Route, Navigate } from 'react-router-dom'
+import SitioPublico from './SitioPublico'
+import Admin from './admin/Admin'
+
+// /admin no se enlaza desde ningun lado del sitio, pero eso es comodidad y no
+// seguridad: quien escriba la URL llega igual. Lo que protege es la sesion de
+// Supabase y, sobre todo, las politicas RLS de la base.
 
 function App() {
   return (
-    <>
-      <Navbar />
-      <main>
-        <Inicio />
-        <Coleccion />
-        <Lookbook />
-        <Drops />
-        <Sobre />
-        <Contacto />
-      </main>
-      <Footer />
-      <NewsletterPopup />
-    </>
+    <Routes>
+      <Route path="/" element={<SitioPublico />} />
+      <Route path="/admin" element={<Admin />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   )
 }
 

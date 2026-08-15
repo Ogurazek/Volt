@@ -1,12 +1,12 @@
 import './Inicio.css'
 
-const ULTIMOS_DROPS = [
-  { nombre: 'Voltaje Hoodie', categoria: 'Hoodies', estado: 'Nuevo' },
-  { nombre: 'Circuito Tee', categoria: 'Tees', estado: 'Nuevo' },
-  { nombre: 'Corriente Cargo', categoria: 'Pants', estado: 'Agotado' },
-]
-
 const CINTA_ITEMS = ['Nueva temporada', 'Drops limitados', 'Sin restock', 'VOLT']
+
+const ETIQUETAS_ESTADO = {
+  nuevo: 'Nuevo',
+  agotado: 'Agotado',
+  proximo: 'Próximo',
+}
 
 function Cinta() {
   return (
@@ -25,7 +25,9 @@ function Cinta() {
   )
 }
 
-function Inicio() {
+function Inicio({ drops }) {
+  const destacados = drops.slice(0, 3)
+
   return (
     <section id="inicio" className="inicio">
       <div className="inicio__hero">
@@ -66,24 +68,29 @@ function Inicio() {
         </div>
       </div>
 
-      <div className="inicio__destacados">
-        <div className="contenedor">
-          <span className="inicio__drops-titulo">Últimos drops</span>
-          <div className="inicio__drops-grid">
-            {ULTIMOS_DROPS.map((drop) => (
-              <a href="#drops" className="drop-card" key={drop.nombre}>
-                <div className="drop-card__imagen">
-                  <span className={`drop-card__estado drop-card__estado--${drop.estado === 'Nuevo' ? 'nuevo' : 'agotado'}`}>
-                    {drop.estado}
-                  </span>
-                </div>
-                <span className="drop-card__categoria">{drop.categoria}</span>
-                <span className="drop-card__nombre">{drop.nombre}</span>
-              </a>
-            ))}
+      {destacados.length > 0 && (
+        <div className="inicio__destacados">
+          <div className="contenedor">
+            <span className="inicio__drops-titulo">Últimos drops</span>
+            <div className="inicio__drops-grid">
+              {destacados.map((drop) => (
+                <a href="#drops" className="drop-card" key={drop.id}>
+                  <div className="drop-card__imagen">
+                    {drop.imagen_url && (
+                      <img className="drop-card__foto" src={drop.imagen_url} alt={drop.nombre} />
+                    )}
+                    <span className={`drop-card__estado drop-card__estado--${drop.estado}`}>
+                      {ETIQUETAS_ESTADO[drop.estado]}
+                    </span>
+                  </div>
+                  <span className="drop-card__categoria">{drop.categorias?.nombre}</span>
+                  <span className="drop-card__nombre">{drop.nombre}</span>
+                </a>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </section>
   )
 }

@@ -3,6 +3,7 @@ import { Check } from 'lucide-react'
 import './Contacto.css'
 import IconoMarca from '../../components/IconoMarca/IconoMarca'
 import { redes } from '../../data/redes'
+import { enviarConsulta, traducirErrorEmail } from '../../lib/contacto'
 
 const CAMPOS_INICIALES = { nombre: '', email: '', mensaje: '' }
 
@@ -10,6 +11,8 @@ function Contacto() {
   const [campos, setCampos] = useState(CAMPOS_INICIALES)
   const [errores, setErrores] = useState({})
   const [enviado, setEnviado] = useState(false)
+  const [enviando, setEnviando] = useState(false)
+  const [errorEnvio, setErrorEnvio] = useState('')
 
   const actualizarCampo = (campo) => (evento) => {
     setCampos((anteriores) => ({ ...anteriores, [campo]: evento.target.value }))
@@ -24,11 +27,22 @@ function Contacto() {
     return Object.keys(nuevosErrores).length === 0
   }
 
-  const enviarFormulario = (evento) => {
+  const enviarFormulario = async (evento) => {
     evento.preventDefault()
     if (!validar()) return
-    setEnviado(true)
-    setCampos(CAMPOS_INICIALES)
+
+    setEnviando(true)
+    setErrorEnvio('')
+
+    try {
+      await enviarConsulta(campos)
+      setEnviado(true)
+      setCampos(CAMPOS_INICIALES)
+    } catch (error) {
+      setErrorEnvio(traducirErrorEmail(error))
+    } finally {
+      setEnviando(false)
+    }
   }
 
   return (
@@ -122,8 +136,14 @@ function Contacto() {
                   )}
                 </div>
 
-                <button type="submit" className="contacto__submit">
-                  Enviar mensaje
+                {errorEnvio && (
+                  <span className="contacto__error contacto__error--envio" role="alert">
+                    {errorEnvio}
+                  </span>
+                )}
+
+                <button type="submit" className="contacto__submit" disabled={enviando}>
+                  {enviando ? 'Enviando...' : 'Enviar mensaje'}
                 </button>
               </form>
             )}

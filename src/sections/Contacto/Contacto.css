@@ -94,6 +94,12 @@
   font-weight: 600;
 }
 
+/* El error de envio no cuelga de un campo: necesita su propio respiro. */
+.contacto__error--envio {
+  margin-top: -8px;
+  line-height: 1.6;
+}
+
 .contacto__submit {
   margin-top: 8px;
   padding: 18px;
@@ -107,10 +113,15 @@
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-.contacto__submit:hover,
-.contacto__submit:focus-visible {
+.contacto__submit:hover:not(:disabled),
+.contacto__submit:focus-visible:not(:disabled) {
   transform: translateY(-2px);
   box-shadow: 0 12px 28px rgba(255, 229, 0, 0.3);
+}
+
+.contacto__submit:disabled {
+  opacity: 0.5;
+  cursor: progress;
 }
 
 /* --- Éxito --- */

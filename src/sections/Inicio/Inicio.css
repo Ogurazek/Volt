@@ -332,5 +332,6 @@
   .inicio__drops-grid {
     grid-template-columns: 1fr;
     max-width: 320px;
+    margin-inline: auto;
   }
 }

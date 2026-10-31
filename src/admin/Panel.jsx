@@ -6,8 +6,10 @@ import ProductosAdmin from './ProductosAdmin'
 import DropsAdmin from './DropsAdmin'
 import SobreAdmin from './SobreAdmin'
 import LookbookAdmin from './LookbookAdmin'
+import PedidosAdmin from './PedidosAdmin'
 
 const SECCIONES = [
+  { clave: 'pedidos', etiqueta: 'Pedidos', componente: PedidosAdmin },
   { clave: 'coleccion', etiqueta: 'Colección', componente: ProductosAdmin },
   { clave: 'lookbook', etiqueta: 'Lookbook', componente: LookbookAdmin },
   { clave: 'drops', etiqueta: 'Drops', componente: DropsAdmin },
@@ -15,7 +17,7 @@ const SECCIONES = [
 ]
 
 function Panel({ sesion }) {
-  const [seccion, setSeccion] = useState('coleccion')
+  const [seccion, setSeccion] = useState('pedidos')
   const [saliendo, setSaliendo] = useState(false)
 
   const SeccionActiva = SECCIONES.find((item) => item.clave === seccion).componente

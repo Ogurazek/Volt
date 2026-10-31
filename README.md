@@ -5,9 +5,10 @@ streetwear. Proyecto final de la Tecnicatura Universitaria en Diseño Multimedia
 y de Sitios Web.
 
 El proyecto tiene **dos caras sobre una misma base de datos**: un sitio público
-donde el visitante recorre el catálogo, el lookbook y los lanzamientos, y un
-**panel de administración privado** desde el cual los dueños de la marca editan
-todo ese contenido sin tocar código ni volver a desplegar.
+donde el visitante recorre el catálogo, el lookbook y los lanzamientos, arma su
+**carrito** y **compra con un pago simulado**, y un **panel de administración
+privado** desde el cual los dueños de la marca editan todo ese contenido y
+gestionan los pedidos sin tocar código ni volver a desplegar.
 
 ---
 
@@ -43,15 +44,20 @@ Navegador (React SPA servida por Vercel)
 
 ## Arquitectura
 
-Solo existen **dos rutas**:
+Existen **tres rutas**:
 
 | Ruta | Qué es |
 |---|---|
 | `/` | Sitio público: SPA de una sola página con 6 secciones ancladas |
+| `/checkout` | Finalizar compra: datos, envío y pago simulado |
 | `/admin` | Panel de administración, detrás de login |
 
-Cualquier otra ruta redirige a `/`. El panel se carga con `lazy()` + `Suspense`,
-así un visitante común nunca descarga el código del administrador.
+Cualquier otra ruta redirige a `/`. El panel y el checkout se cargan con
+`lazy()` + `Suspense`, así un visitante que solo mira el catálogo nunca
+descarga ese código.
+
+`/` y `/checkout` comparten un layout (`Tienda.jsx`) que carga el catálogo una
+sola vez y provee el carrito a las dos rutas.
 
 Las seis secciones del sitio se navegan por anchors desde la navbar fija:
 
@@ -134,10 +140,45 @@ marca, sin necesidad de un servidor propio. Maneja estados de carga, de error
 Al costado, las redes sociales de la marca con su handle, que abren en pestaña
 nueva.
 
+### Carrito
+
+- Cada producto de la Colección tiene un botón **Agregar al carrito**, que
+  confirma en el mismo botón sin interrumpir la navegación.
+- Desde el ícono de la navbar (con contador) se abre un **panel lateral** con
+  las prendas, selector de cantidad, subtotales, total, vaciar y **Finalizar
+  compra**. Se cierra con `Escape` o clic afuera y devuelve el foco al botón.
+- Se guarda en `localStorage`, así **sobrevive a un refresh**. Si el navegador
+  bloquea el almacenamiento, sigue funcionando sin persistir.
+- Tope de 10 unidades por prenda (ediciones limitadas).
+- Cuando llega el catálogo, el carrito **se sincroniza con la base**: si el
+  administrador cambió un precio, se muestra el nuevo; si borró el producto,
+  sale del carrito.
+
+### Checkout (`/checkout`)
+
+Página propia, con una barra mínima que solo permite volver a la tienda. Tres
+pasos (datos, envío y pago) y al costado el resumen del pedido.
+
+- **Validación en el cliente** con las mismas reglas que las restricciones de
+  la base (email, teléfono, código postal viejo o CPA…), con foco en el primer
+  campo con error.
+- **Dos medios de pago simulados:**
+  - **Tarjeta:** detecta la marca (Visa, Mastercard, Amex), formatea el número
+    y valida el dígito verificador (algoritmo de Luhn), el vencimiento y el
+    CVV. A la base solo viajan la marca y los últimos 4 dígitos, como haría la
+    tokenización de una pasarela real. Tarjetas de prueba, con botones para
+    completarlas: `4242 4242 4242 4242` (aprobada) y `4000 0000 0000 0002`
+    (rechazada). El pedido nace **pagado**.
+  - **Transferencia:** el pedido nace **pendiente** y la confirmación muestra
+    datos bancarios ficticios con el número de pedido para el concepto.
+- Pantalla de **confirmación** con el número de pedido (`#000123`) y el total
+  calculado por la base; el carrito se vacía.
+
 ### Elementos transversales
 
-- **Navbar fija** con los seis enlaces y menú hamburguesa en móvil. Si hay
-  sesión iniciada, aparece además un atajo a `/admin`.
+- **Navbar fija** con los seis enlaces, el carrito y menú hamburguesa en móvil
+  (el carrito queda siempre visible). Si hay sesión iniciada, aparece además
+  un atajo a `/admin`.
 - **Footer** con navegación, suscripción a la newsletter y redes sociales.
 - **Popup de newsletter** que aparece 2,5 s después de entrar, **una sola vez
   por sesión** (se recuerda en `sessionStorage`), cerrable con `Escape` o
@@ -173,10 +214,11 @@ políticas RLS de la base — ver [Seguridad](#seguridad).
 
 ### Qué se puede administrar
 
-El panel tiene cuatro pestañas, cada una con alta, baja y modificación:
+El panel tiene cinco pestañas:
 
 | Pestaña | Qué permite |
 |---|---|
+| **Pedidos** | Lista de pedidos con filtro por estado, detalle (productos, contacto, envío y medio de pago) y cambio de estado: *pendiente, pagado, enviado, entregado, cancelado* |
 | **Colección** | ABM de productos: nombre, categoría, precio e imagen |
 | **Lookbook** | ABM de looks: nombre, foto y **selección de prendas del catálogo** (agrupadas por categoría), más botones para **reordenar** los looks |
 | **Drops** | ABM de lanzamientos: nombre, categoría, estado, fecha e imagen |
@@ -190,7 +232,7 @@ público al recargar.
 
 ## Base de datos (Supabase)
 
-El esquema vive en `supabase/migrations/` como **6 migraciones versionadas**:
+El esquema vive en `supabase/migrations/` como **7 migraciones versionadas**:
 la base se puede reconstruir desde cero con el CLI de Supabase.
 
 ```
@@ -199,6 +241,8 @@ categorias --+--< productos --< look_productos >-- looks
 
 sobre (fila única) --+--< sobre_parrafos
                      +--< sobre_valores
+
+pedidos --< pedido_items >-- productos (queda en null si se borra el producto)
 ```
 
 | Tabla | Contenido |
@@ -211,6 +255,8 @@ sobre (fila única) --+--< sobre_parrafos
 | `sobre` | Texto institucional (fila única) |
 | `sobre_parrafos` | Párrafos de la historia |
 | `sobre_valores` | Valores de la marca |
+| `pedidos` | Pedidos confirmados: comprador, envío, medio de pago, total y estado |
+| `pedido_items` | Prendas de cada pedido, con nombre y precio copiados al momento de la compra |
 
 ### Decisiones de diseño
 
@@ -229,12 +275,32 @@ sobre (fila única) --+--< sobre_parrafos
   - `check (id = 1)` en `sobre` — impide que existan dos filas
 - **`on delete restrict` vs `on delete cascade`:** borrar una categoría con
   productos asociados se bloquea; borrar un look sí arrastra sus asociaciones.
+- **El carrito no va a la base, el pedido sí.** El carrito es estado temporal
+  de cada visitante y vive en `localStorage`; lo que se persiste es el pedido
+  confirmado. No hay cuentas de clientes: se compra como invitado.
+- **Los pedidos se crean solo con la función `crear_pedido`** (RPC). Del
+  navegador viajan id de producto y cantidad; **el precio y el total los
+  calcula Postgres** con la tabla `productos`, así nadie puede editar el precio
+  desde la consola. La función valida productos inexistentes, carrito vacío y
+  cantidades, y simula la pasarela (tarjeta terminada en `0002` → rechazada).
+  Si algo falla, la transacción entera se deshace.
+- **`pedido_items` copia nombre y precio.** Si el administrador cambia el
+  precio o borra el producto, el pedido sigue reflejando lo que se pagó
+  (`producto_id` pasa a `null` con `on delete set null`).
 
 ### Seguridad
 
 - **RLS activo en todas las tablas**, siempre con el mismo patrón: `select`
   abierto a `anon` (es contenido público del sitio) e `insert` / `update` /
   `delete` restringidos a `authenticated`.
+- **Los pedidos son la excepción**, porque tienen datos personales: `anon` no
+  puede leerlos ni escribirlos (solo ejecutar `crear_pedido`, que es
+  `security definer` con `search_path` vacío), y `authenticated` los lee pero
+  **solo puede modificar la columna `estado`** (permiso por columna): lo que
+  compró el cliente no se edita.
+- **El registro de usuarios tiene que estar deshabilitado** en Supabase
+  (*Authentication → Sign In / Providers → Allow new users to sign up*): el
+  modelo asume que la única cuenta que existe es la del administrador.
 - **Storage con las mismas reglas**, y cada política acotada por `bucket_id`
   para no abrir accidentalmente otros buckets del proyecto.
 - Cuatro buckets (`drops`, `productos`, `lookbook`, `sobre`) con **límite de
@@ -252,12 +318,14 @@ sobre (fila única) --+--< sobre_parrafos
 ```
 src/
 ├── sections/     Secciones del sitio público (una carpeta por sección, con su CSS)
-├── components/   Navbar, Footer, NewsletterPopup, IconoMarca
+├── components/   Navbar, Footer, NewsletterPopup, IconoMarca, Carrito (panel + provider)
+├── checkout/     Página de checkout y confirmación del pedido
 ├── admin/        Panel: login, layout y una vista por pestaña, con sus formularios
 ├── hooks/        Un hook por dominio: useProductos, useDrops, useLookbook,
-│                 useSobre, useSesion
+│                 useSobre, useSesion, useCarrito
 ├── lib/          Acceso a datos y servicios: supabase, productos, drops, lookbook,
-│                 sobre, categorias, almacenamiento, contacto, errores
+│                 sobre, categorias, almacenamiento, contacto, errores, pedidos,
+│                 carrito, tarjeta, formato
 ├── data/         Datos que no viven en la base (redes sociales)
 └── styles/       global.css: paleta, tipografías, contenedor y utilidades
 ```
@@ -331,10 +399,15 @@ del cliente.
 
 ## Alcance
 
-Es un **sitio institucional/comercial con gestor de contenido propio**. No es un
-e-commerce: no hay carrito, checkout, pasarela de pago ni control de stock — fue
-una decisión de alcance deliberada.
+Es un **sitio institucional/comercial con gestor de contenido propio y tienda**:
+carrito, checkout y gestión de pedidos. **El pago es simulado**: no hay
+integración con una pasarela real. En una integración real (Mercado Pago, por
+ejemplo) el formulario de tarjeta lo provee la pasarela, y es ella la que avisa
+al servidor por webhook cuándo un pago se aprobó; hoy ese rol lo cumple
+`crear_pedido`.
 
-Mejoras posibles a futuro: carrito y pasarela de pago, talles y stock,
+Mejoras posibles a futuro: integración con una pasarela real, mail de
+confirmación del pedido, cuentas de clientes (requiere roles en las políticas
+RLS), talles y stock,
 optimización de imágenes (`srcset` y lazy loading), roles de usuario en el
 panel, buscador y paginación en el catálogo, y tests automatizados.

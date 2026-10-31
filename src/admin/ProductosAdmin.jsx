@@ -3,13 +3,8 @@ import { Pencil, Trash2, Plus } from 'lucide-react'
 import { eliminarProducto, listarProductos } from '../lib/productos'
 import { listarCategorias } from '../lib/categorias'
 import { traducirError } from '../lib/errores'
+import { formatearPrecio } from '../lib/formato'
 import FormularioProducto from './FormularioProducto'
-
-const formatearPrecio = new Intl.NumberFormat('es-AR', {
-  style: 'currency',
-  currency: 'ARS',
-  maximumFractionDigits: 0,
-}).format
 
 function ProductosAdmin() {
   const [productos, setProductos] = useState([])

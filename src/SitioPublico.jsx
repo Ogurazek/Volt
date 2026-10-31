@@ -1,6 +1,8 @@
+import { useOutletContext } from 'react-router-dom'
 import Navbar from './components/Navbar/Navbar'
 import Footer from './components/Footer/Footer'
 import NewsletterPopup from './components/NewsletterPopup/NewsletterPopup'
+import Carrito from './components/Carrito/Carrito'
 import Inicio from './sections/Inicio/Inicio'
 import Coleccion from './sections/Coleccion/Coleccion'
 import Lookbook from './sections/Lookbook/Lookbook'
@@ -8,13 +10,12 @@ import Drops from './sections/Drops/Drops'
 import Sobre from './sections/Sobre/Sobre'
 import Contacto from './sections/Contacto/Contacto'
 import { useDrops } from './hooks/useDrops'
-import { useProductos } from './hooks/useProductos'
 import { useSobre } from './hooks/useSobre'
 import { useLookbook } from './hooks/useLookbook'
 
 function SitioPublico() {
   const drops = useDrops()
-  const catalogo = useProductos()
+  const catalogo = useOutletContext()
   const sobre = useSobre()
   const lookbook = useLookbook()
 
@@ -35,6 +36,7 @@ function SitioPublico() {
         <Contacto />
       </main>
       <Footer />
+      <Carrito />
       <NewsletterPopup />
     </>
   )

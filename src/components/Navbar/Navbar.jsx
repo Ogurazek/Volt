@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Settings } from 'lucide-react'
+import { Settings, ShoppingBag } from 'lucide-react'
 import './Navbar.css'
 import { useSesion } from '../../hooks/useSesion'
+import { useCarrito } from '../../hooks/useCarrito'
 
 const enlaces = [
   { href: '#inicio', label: 'Inicio' },
@@ -16,6 +17,7 @@ const enlaces = [
 function Navbar() {
   const [abierto, setAbierto] = useState(false)
   const { sesion } = useSesion()
+  const { cantidadTotal, abrirCarrito } = useCarrito()
 
   const cerrarMenu = () => setAbierto(false)
 
@@ -25,18 +27,6 @@ function Navbar() {
         <a href="#inicio" className="navbar__logo" onClick={cerrarMenu}>
           VOLT
         </a>
-
-        <button
-          type="button"
-          className={`navbar__toggle ${abierto ? 'navbar__toggle--abierto' : ''}`}
-          aria-label={abierto ? 'Cerrar menú' : 'Abrir menú'}
-          aria-expanded={abierto}
-          onClick={() => setAbierto(!abierto)}
-        >
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
 
         <ul className={`navbar__links ${abierto ? 'navbar__links--abierto' : ''}`}>
           {enlaces.map((enlace) => (
@@ -57,6 +47,38 @@ function Navbar() {
             </li>
           )}
         </ul>
+
+        {/* Fuera del menu desplegable: en movil el carrito tiene que verse siempre. */}
+        <div className="navbar__acciones">
+          <button
+            type="button"
+            className="navbar__carrito"
+            aria-label={`Abrir carrito (${cantidadTotal} ${cantidadTotal === 1 ? 'producto' : 'productos'})`}
+            onClick={() => {
+              cerrarMenu()
+              abrirCarrito()
+            }}
+          >
+            <ShoppingBag size={20} strokeWidth={2} aria-hidden="true" />
+            {cantidadTotal > 0 && (
+              <span className="navbar__carrito-cantidad" aria-hidden="true">
+                {cantidadTotal}
+              </span>
+            )}
+          </button>
+
+          <button
+            type="button"
+            className={`navbar__toggle ${abierto ? 'navbar__toggle--abierto' : ''}`}
+            aria-label={abierto ? 'Cerrar menú' : 'Abrir menú'}
+            aria-expanded={abierto}
+            onClick={() => setAbierto(!abierto)}
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
       </nav>
     </header>
   )

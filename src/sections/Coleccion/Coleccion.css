@@ -106,6 +106,39 @@
   white-space: nowrap;
 }
 
+.producto-card__agregar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 10px 14px;
+  font-weight: 600;
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background-color: transparent;
+  color: var(--negro);
+  border: 2px solid var(--negro);
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.producto-card__agregar:hover:not(:disabled) {
+  background-color: var(--negro);
+  color: var(--blanco);
+}
+
+.producto-card__agregar--ok,
+.producto-card__agregar--ok:hover:not(:disabled) {
+  background-color: var(--amarillo);
+  color: var(--negro);
+}
+
+.producto-card__agregar:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
 .coleccion__vacio {
   margin-top: 32px;
   opacity: 0.7;

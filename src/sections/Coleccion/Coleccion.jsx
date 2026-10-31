@@ -1,11 +1,45 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { Check, ShoppingBag } from 'lucide-react'
 import './Coleccion.css'
+import { useCarrito } from '../../hooks/useCarrito'
+import { CANTIDAD_MAXIMA } from '../../lib/carrito'
+import { formatearPrecio } from '../../lib/formato'
 
-const formatearPrecio = new Intl.NumberFormat('es-AR', {
-  style: 'currency',
-  currency: 'ARS',
-  maximumFractionDigits: 0,
-}).format
+// Confirma el agregado en el mismo boton, sin abrir el carrito: quien esta
+// recorriendo el catalogo puede seguir sumando prendas sin que lo interrumpan.
+function BotonAgregar({ producto }) {
+  const { agregar, cantidadDe } = useCarrito()
+  const [agregado, setAgregado] = useState(false)
+
+  useEffect(() => {
+    if (!agregado) return undefined
+    const temporizador = setTimeout(() => setAgregado(false), 1500)
+    return () => clearTimeout(temporizador)
+  }, [agregado])
+
+  const enElTope = cantidadDe(producto.id) >= CANTIDAD_MAXIMA
+
+  return (
+    <button
+      type="button"
+      className={`producto-card__agregar ${agregado ? 'producto-card__agregar--ok' : ''}`}
+      disabled={enElTope}
+      onClick={() => {
+        agregar(producto)
+        setAgregado(true)
+      }}
+    >
+      {agregado ? (
+        <Check size={16} strokeWidth={2.5} aria-hidden="true" />
+      ) : (
+        <ShoppingBag size={16} strokeWidth={2} aria-hidden="true" />
+      )}
+      <span aria-live="polite">
+        {enElTope ? 'Máximo por pedido' : agregado ? 'Agregado' : 'Agregar al carrito'}
+      </span>
+    </button>
+  )
+}
 
 function Coleccion({ productos, categorias, cargando, error }) {
   const [categoriaElegida, setCategoriaElegida] = useState(
@@ -96,6 +130,7 @@ function Coleccion({ productos, categorias, cargando, error }) {
                       <span className="producto-card__nombre">{producto.nombre}</span>
                       <span className="producto-card__precio">{formatearPrecio(producto.precio)}</span>
                     </div>
+                    <BotonAgregar producto={producto} />
                   </li>
                 ))}
               </ul>

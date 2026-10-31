@@ -1,5 +1,6 @@
 import { lazy, Suspense } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
+import Tienda from './Tienda'
 import SitioPublico from './SitioPublico'
 
 // El panel se carga aparte y solo al entrar a /admin: un visitante del sitio
@@ -13,7 +14,9 @@ const Admin = lazy(() => import('./admin/Admin'))
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<SitioPublico />} />
+      <Route element={<Tienda />}>
+        <Route path="/" element={<SitioPublico />} />
+      </Route>
       <Route
         path="/admin"
         element={

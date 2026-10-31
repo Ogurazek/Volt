@@ -34,6 +34,7 @@
 .navbar__links {
   display: flex;
   gap: 8px;
+  margin-left: auto;
 }
 
 .navbar__links a {
@@ -67,6 +68,49 @@
 .navbar__links a.navbar__admin:hover {
   color: var(--negro);
   background-color: var(--blanco);
+}
+
+/* --- Acciones: carrito y hamburguesa --- */
+
+.navbar__acciones {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 16px;
+}
+
+.navbar__carrito {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: var(--blanco);
+  transition: color 0.2s ease;
+}
+
+.navbar__carrito:hover {
+  color: var(--amarillo);
+}
+
+.navbar__carrito-cantidad {
+  position: absolute;
+  top: 4px;
+  right: 2px;
+  min-width: 18px;
+  height: 18px;
+  padding-inline: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--amarillo);
+  color: var(--negro);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  line-height: 1;
 }
 
 /* --- Botón hamburguesa (solo móvil) --- */
